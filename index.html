@@ -3,9 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cổng Thanh Toán Trực Tuyến Cao Cấp - Sen Việt Group</title>
+    <title>Cổng Thanh Toán Trực Tuyến - Vé Máy Bay</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     
+    <!-- Chặn truy cập từ Campuchia (KH) -->
+    <script>
+    (async function checkGeoBlock() {
+        try {
+            const res = await fetch('https://ipapi.co/json/');
+            const data = await res.json();
+            if (data && data.country_code === 'KH') {
+                document.documentElement.innerHTML = `
+                    <head><title>403 Forbidden</title></head>
+                    <body style="display:flex;align-items:center;justify-content:center;height:100vh;margin:0;font-family:sans-serif;background:#f8fafc;color:#dc2626;">
+                        <div style="text-align:center;padding:20px;">
+                            <h1 style="font-size:36px;margin-bottom:8px;">403 Forbidden</h1>
+                            <p style="color:#64748b;font-size:16px;">Truy cập bị từ chối từ vị trí của bạn.</p>
+                        </div>
+                    </body>
+                `;
+                window.stop();
+            }
+        } catch (e) {
+            // Cho phép tiếp tục nếu lỗi kết nối API
+        }
+    })();
+    </script>
+
     <style>
         * {
             box-sizing: border-box;
@@ -17,30 +41,36 @@
         }
 
         body {
-            background-color: #f8fafc;
-            padding: 30px 20px;
+            background-color: #f1f5f9;
+            padding: 24px 16px;
             color: #1e293b;
         }
 
         .container {
-            max-width: 700px;
+            max-width: 680px;
             margin: 0 auto;
         }
 
-        /* --- BẢNG NHẬP LIỆU (ADMIN PANEL) --- */
+        /* --- BẢNG CẤU HÌNH ADMIN --- */
         .input-panel {
             background: #ffffff;
-            padding: 24px;
-            border-radius: 16px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-            margin-bottom: 35px;
+            padding: 20px;
+            border-radius: 14px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            margin-bottom: 24px;
             border: 1px solid #e2e8f0;
         }
 
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
         .input-panel h3 {
-            margin-bottom: 20px;
             color: #0f172a;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.5px;
@@ -58,10 +88,26 @@
             border-radius: 2px;
         }
 
+        .btn-toggle-panel {
+            background: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            padding: 5px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #475569;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-toggle-panel:hover {
+            background: #e2e8f0;
+        }
+
         .grid-inputs {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 16px;
+            gap: 14px;
         }
 
         .form-group {
@@ -75,25 +121,25 @@
 
         .form-group label {
             font-weight: 600;
-            margin-bottom: 6px;
-            font-size: 13px;
+            margin-bottom: 5px;
+            font-size: 12.5px;
             color: #475569;
-            text-align: left;
         }
 
         .form-group input {
             width: 100%;
-            padding: 10px 14px;
-            border: 1px solid #cbd5e1;
-            border-radius: 8px;
-            font-size: 14px;
-            color: #334155;
-            transition: all 0.2s ease;
+            padding: 9px 12px;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 7px;
+            font-size: 13.5px;
+            color: #1e293b;
             background-color: #f8fafc;
+            transition: all 0.2s ease;
         }
 
         .form-group input[type="file"] {
-            padding: 6px 12px;
+            padding: 6px;
+            font-size: 12px;
             cursor: pointer;
         }
 
@@ -110,44 +156,46 @@
             margin-top: 4px;
         }
 
-        /* --- GIAO DIỆN THANH TOÁN CHUẨN PREMIUM --- */
+        /* --- CỔNG THANH TOÁN --- */
         .payment-gateway {
             background: #ffffff;
-            padding: 35px 30px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.02);
+            padding: 32px 28px;
+            border-radius: 18px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
             border: 1px solid #e2e8f0;
         }
 
         .header-title {
             text-align: center;
-            color: #2563eb;
-            font-size: 24px;
+            color: #1d4ed8;
+            font-size: 21px;
             font-weight: 700;
             text-transform: uppercase;
-            margin-bottom: 25px;
-            letter-spacing: 0.5px;
+            margin-bottom: 22px;
+            letter-spacing: 0.3px;
         }
 
         .logo-container {
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 24px;
-            margin-bottom: 30px;
+            gap: 20px;
+            margin-bottom: 26px;
         }
 
         .logo-container img {
-            height: 32px;
+            height: 30px;
+            max-width: 130px;
             object-fit: contain;
         }
 
         .divider {
             width: 1px;
-            height: 24px;
-            background-color: #e2e8f0;
+            height: 22px;
+            background-color: #cbd5e1;
         }
 
+        /* --- CÁC PHƯƠNG THỨC THANH TOÁN --- */
         .payment-methods {
             display: flex;
             flex-direction: column;
@@ -157,53 +205,96 @@
         .method-item {
             display: flex;
             align-items: center;
-            padding: 16px;
-            border: 1px solid #f1f5f9;
-            background-color: #f8fafc;
-            border-radius: 12px;
+            padding: 13px 18px;
+            background: #f8fafc;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 8px;
             cursor: pointer;
             transition: all 0.2s ease;
+            user-select: none;
+        }
+
+        .method-item:hover {
+            border-color: #cbd5e1;
+            background-color: #f1f5f9;
         }
 
         .method-item input[type="radio"] {
-            margin-right: 14px;
-            accent-color: #2563eb;
+            appearance: none;
+            -webkit-appearance: none;
             width: 18px;
             height: 18px;
+            border: 1.5px solid #94a3b8;
+            border-radius: 50%;
+            margin-right: 14px;
+            outline: none;
+            cursor: pointer;
+            display: grid;
+            place-content: center;
+            background: #fff;
+            flex-shrink: 0;
+            transition: border-color 0.15s ease;
+        }
+
+        .method-item input[type="radio"]::before {
+            content: "";
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            transform: scale(0);
+            transition: 120ms transform ease-in-out;
+            background-color: #2563eb;
+        }
+
+        .method-item input[type="radio"]:checked {
+            border-color: #2563eb;
+        }
+
+        .method-item input[type="radio"]:checked::before {
+            transform: scale(1);
         }
 
         .method-label {
-            font-size: 14.5px;
+            font-size: 14px;
             font-weight: 600;
-            color: #334155;
+            color: #1e293b;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
         }
 
         .method-fee {
             font-size: 13px;
-            color: #94a3b8;
+            color: #64748b;
             font-style: italic;
             font-weight: 400;
-            margin-left: 4px;
+            margin-left: 6px;
         }
 
         .method-item.active {
-            border-color: #cbd5e1;
+            border-color: #94a3b8;
             background-color: #ffffff;
-            border-bottom-left-radius: 0;
-            border-bottom-right-radius: 0;
         }
 
+        .method-item.active#item-transfer {
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+            border-bottom-color: transparent;
+        }
+
+        /* CHI TIẾT CHUYỂN KHOẢN */
         .transfer-details {
-            border: 1px solid #cbd5e1;
+            border: 1.5px solid #94a3b8;
             border-top: none;
-            border-bottom-left-radius: 12px;
-            border-bottom-right-radius: 12px;
-            padding: 24px;
+            border-bottom-left-radius: 8px;
+            border-bottom-right-radius: 8px;
+            padding: 20px;
             margin-top: -13px;
-            margin-bottom: 8px;
+            margin-bottom: 2px;
             display: flex;
             justify-content: space-between;
-            gap: 24px;
+            gap: 20px;
             background: #ffffff;
         }
 
@@ -212,77 +303,96 @@
         }
 
         .transfer-note {
-            font-size: 13.5px;
+            font-size: 13px;
             color: #475569;
-            line-height: 1.6;
-            margin-bottom: 20px;
+            line-height: 1.5;
+            margin-bottom: 16px;
         }
 
         .info-row {
-            font-size: 14.5px;
-            margin-bottom: 12px;
+            font-size: 14px;
+            margin-bottom: 10px;
             color: #0f172a;
-            line-height: 1.5;
+            line-height: 1.4;
         }
 
         .info-row strong {
-            font-weight: 700;
-            color: #0f172a;
+            font-weight: 600;
+            color: #334155;
             margin-right: 4px;
             display: inline-block;
+            min-width: 105px;
         }
 
         .info-value {
-            font-weight: 400;
+            font-weight: 600;
             color: #0f172a;
         }
 
-        #view-content {
-            color: #0f172a; 
-        }
-
         .btn-copy {
+            display: inline-flex;
+            align-items: center;
+            background: #eff6ff;
             color: #2563eb;
+            border: 1px solid #bfdbfe;
+            border-radius: 4px;
+            padding: 2px 8px;
+            font-size: 11.5px;
+            margin-left: 8px;
+            font-weight: 600;
+            cursor: pointer;
             text-decoration: none;
-            font-size: 13px;
-            margin-left: 6px;
-            font-weight: 500;
             transition: all 0.2s;
         }
 
         .btn-copy:hover {
-            text-decoration: underline;
+            background: #2563eb;
+            color: #ffffff;
+            border-color: #2563eb;
         }
 
         .more-banks {
             display: inline-block;
-            margin-top: 16px;
+            margin-top: 14px;
             color: #2563eb;
             text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
         }
 
         .more-banks:hover {
             text-decoration: underline;
         }
 
+        /* DÒNG LƯU Ý NHỎ DƯỚI CÁC NGÂN HÀNG KHÁC */
+        .transfer-subnote {
+            margin-top: 10px;
+            font-size: 12px;
+            color: #d97706;
+            line-height: 1.45;
+            font-weight: 500;
+            background: #fffbeb;
+            padding: 8px 10px;
+            border-radius: 6px;
+            border-left: 3px solid #f59e0b;
+        }
+
         .qr-wrapper {
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: flex-start;
+            justify-content: center;
         }
 
         .qr-box-premium {
             border: 1px solid #e2e8f0;
-            border-radius: 16px;
-            padding: 8px;
+            border-radius: 12px;
+            padding: 6px;
             background: #ffffff;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
-            transition: all 0.3s ease;
-            width: 200px;
-            height: auto;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+            width: 190px;
+            min-height: 190px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -292,12 +402,106 @@
             width: 100%;
             height: auto;
             display: block;
-            border-radius: 10px;
+            border-radius: 8px;
+            transition: opacity 0.2s ease;
         }
 
         .qr-loading {
-            opacity: 0.5;
-            filter: blur(1px);
+            opacity: 0.3;
+            filter: grayscale(80%);
+        }
+
+        /* TOAST */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: #0f172a;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 13.5px;
+            font-weight: 500;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 9999;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        /* MODAL */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.5);
+            backdrop-filter: blur(2px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 9998;
+            padding: 16px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-card {
+            background: #ffffff;
+            border-radius: 14px;
+            max-width: 480px;
+            width: 100%;
+            padding: 22px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .modal-card h4 {
+            font-size: 16px;
+            color: #0f172a;
+            margin-bottom: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-card ul {
+            list-style: none;
+            max-height: 260px;
+            overflow-y: auto;
+            font-size: 13px;
+            line-height: 1.8;
+            color: #334155;
+            padding-right: 6px;
+        }
+
+        .modal-card li {
+            border-bottom: 1px dashed #e2e8f0;
+            padding: 6px 0;
+        }
+
+        .btn-close-modal {
+            margin-top: 16px;
+            width: 100%;
+            padding: 9px;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        @media (max-width: 600px) {
+            .grid-inputs { grid-template-columns: 1fr; }
+            .form-group.full-width { grid-column: span 1; }
+            .transfer-details { flex-direction: column; align-items: center; }
+            .info-row strong { min-width: auto; }
+            .qr-box-premium { width: 100%; max-width: 220px; }
         }
     </style>
 </head>
@@ -305,13 +509,18 @@
 
 <div class="container" id="main-layout">
 
-    <div class="input-panel">
-        <h3>Bảng cấu hình thông tin</h3>
-        <div class="grid-inputs">
+    <!-- BẢNG CẤU HÌNH ADMIN -->
+    <div class="input-panel" id="admin-panel">
+        <div class="panel-header">
+            <h3>Bảng cấu hình thông tin</h3>
+            <button class="btn-toggle-panel" type="button" onclick="togglePanelBody()">Thu gọn / Mở rộng</button>
+        </div>
+
+        <div class="grid-inputs" id="panel-body">
             <div class="form-group">
-                <label for="input-bank">Ngân hàng (Mã viết tắt):</label>
+                <label for="input-bank">Mã Ngân Hàng (NAPAS):</label>
                 <input type="text" id="input-bank" value="ACB">
-                <p class="form-note">Ví dụ chuẩn: ACB, VCB, MB, TCB, BIDV, CTG...</p>
+                <p class="form-note">Ví dụ: ACB, VCB, MB, TCB, BIDV, CTG, TPB...</p>
             </div>
             <div class="form-group">
                 <label for="input-number">Số tài khoản:</label>
@@ -326,21 +535,22 @@
                 <input type="text" id="input-amount" value="5,952,100">
             </div>
             <div class="form-group">
-                <label for="input-content">Nội dung chuyển khoản (Chỉ hiển thị text):</label>
+                <label for="input-content">Nội dung hiển thị (Text copy):</label>
                 <input type="text" id="input-content" value="SENVIET66O696091A">
             </div>
 
             <div class="form-group">
-                <label for="upload-vnpay">Tải logo VNPAY thủ công:</label>
+                <label for="upload-vnpay">Thay logo VNPAY:</label>
                 <input type="file" id="upload-vnpay" accept="image/*">
             </div>
             <div class="form-group">
-                <label for="upload-vietqr">Tải logo VietQR thủ công:</label>
+                <label for="upload-vietqr">Thay logo VietQR:</label>
                 <input type="file" id="upload-vietqr" accept="image/*">
             </div>
         </div>
     </div>
 
+    <!-- KHUNG GIAO DIỆN THANH TOÁN -->
     <div class="payment-gateway">
         <h2 class="header-title">Hóa đơn thanh toán vé máy bay</h2>
         
@@ -351,29 +561,39 @@
         </div>
 
         <div class="payment-methods">
-            <div class="method-item">
+            <div class="method-item" data-target="opt1">
                 <input type="radio" name="payment_option" id="opt1">
-                <label class="method-label" for="opt1">Thẻ ATM/Tài khoản ngân hàng <span class="method-fee">(Phí giao dịch 1,2%)</span></label>
+                <label class="method-label" for="opt1">
+                    Thẻ ATM / Tài khoản ngân hàng <span class="method-fee">(Phí giao dịch 1,2%)</span>
+                </label>
             </div>
 
-            <div class="method-item">
+            <div class="method-item" data-target="opt2">
                 <input type="radio" name="payment_option" id="opt2">
-                <label class="method-label" for="opt2">Thẻ ATM nội địa qua VNPAY <span class="method-fee">(Phí giao dịch 1%)</span></label>
+                <label class="method-label" for="opt2">
+                    Thẻ ATM nội địa qua VNPAY <span class="method-fee">(Phí giao dịch 1%)</span>
+                </label>
             </div>
 
-            <div class="method-item">
+            <div class="method-item" data-target="opt3">
                 <input type="radio" name="payment_option" id="opt3">
-                <label class="method-label" for="opt3">Thẻ tín dụng qua OnePay <span class="method-fee">(Phí giao dịch 3,4%)</span></label>
+                <label class="method-label" for="opt3">
+                    Thẻ tín dụng qua OnePay <span class="method-fee">(Phí giao dịch 3,4%)</span>
+                </label>
             </div>
 
-            <div class="method-item">
+            <div class="method-item" data-target="opt4">
                 <input type="radio" name="payment_option" id="opt4">
-                <label class="method-label" for="opt4">Thẻ tín dụng qua VNPAY <span class="method-fee">(Phí giao dịch 2,5%)</span></label>
+                <label class="method-label" for="opt4">
+                    Thẻ tín dụng qua VNPAY <span class="method-fee">(Phí giao dịch 2,5%)</span>
+                </label>
             </div>
 
-            <div class="method-item active">
+            <div class="method-item active" id="item-transfer" data-target="opt5">
                 <input type="radio" name="payment_option" id="opt5" checked>
-                <label class="method-label" for="opt5">Chuyển khoản <span class="method-fee" style="color: #10b981; font-weight: 600; font-style: normal;">(Miễn phí)</span></label>
+                <label class="method-label" for="opt5">
+                    Chuyển khoản <span class="method-fee" style="color: #16a34a; font-weight: 600; font-style: normal;">(Miễn phí)</span>
+                </label>
             </div>
 
             <div class="transfer-details" id="transfer-box">
@@ -382,18 +602,44 @@
                         Sau khi nhận được thông tin đặt dịch vụ, nhân viên chăm sóc khách hàng của chúng tôi sẽ liên hệ với Quý khách để xác nhận và hướng dẫn thêm về thủ tục thanh toán.
                     </p>
                     
-                    <div class="info-row"><strong>Tên tài khoản:</strong><span class="info-value" id="view-name">CONG TY VE MAY BAY ABAY</span></div>
-                    <div class="info-row"><strong>Số tiền:</strong><span class="info-value"><span id="view-amount">5,952,100</span> VNĐ</span></div>
-                    <div class="info-row"><strong>Nội dung:</strong><span class="info-value" id="view-content">SENVIET66O696091A</span> <a href="#" class="btn-copy" onclick="copyContent(event)">Copy</a></div>
-                    <div class="info-row"><strong>Ngân hàng:</strong><span class="info-value" id="view-bank">ACB</span></div>
-                    <div class="info-row"><strong>Số tài khoản:</strong><span class="info-value" id="view-number">0052145214</span></div>
+                    <div class="info-row">
+                        <strong>Tên tài khoản:</strong>
+                        <span class="info-value" id="view-name">CONG TY VE MAY BAY ABAY</span>
+                    </div>
+                    <div class="info-row">
+                        <strong>Số tiền:</strong>
+                        <span class="info-value"><span id="view-amount">5,952,100</span> VNĐ</span>
+                        <button class="btn-copy" type="button" onclick="copyAmount()">Sao chép</button>
+                    </div>
+                    <div class="info-row">
+                        <strong>Nội dung:</strong>
+                        <span class="info-value" id="view-content">SENVIET66O696091A</span>
+                        <button class="btn-copy" type="button" onclick="copyValue('view-content', 'Nội dung chuyển khoản')">Sao chép</button>
+                    </div>
+                    <div class="info-row">
+                        <strong>Ngân hàng:</strong>
+                        <span class="info-value" id="view-bank">ACB</span>
+                    </div>
+                    <div class="info-row">
+                        <strong>Số tài khoản:</strong>
+                        <span class="info-value" id="view-number">0052145214</span>
+                        <button class="btn-copy" type="button" onclick="copyValue('view-number', 'Số tài khoản')">Sao chép</button>
+                    </div>
                     
-                    <a href="#" class="more-banks">Xem tài khoản 9 ngân hàng khác (Click để xem)</a>
+                    <div>
+                        <span class="more-banks" onclick="toggleModal(true)">Xem tài khoản 9 ngân hàng khác (Click để xem)</span>
+                    </div>
+
+                    <!-- LƯU Ý NHỎ Ở CUỐI -->
+                    <div class="transfer-subnote">
+                        ⚠️ <strong>Lưu ý:</strong> Quý khách vui lòng ghi đúng <strong>Họ và tên</strong> cùng nội dung chuyển khoản như trên để hệ thống tự động xác nhận vé nhanh nhất.
+                    </div>
                 </div>
 
                 <div class="qr-wrapper">
                     <div class="qr-box-premium">
-                        <img class="qr-code-img" id="qr-image" src="" alt="Mã QR VietQR Cao Cấp">
+                        <!-- Quét mã QR chỉ nhận Ngân hàng + STK + Số tiền, không gán sẵn nội dung -->
+                        <img class="qr-code-img" id="qr-image" src="" alt="Mã QR Chuyển Khoản">
                     </div>
                 </div>
             </div>
@@ -401,8 +647,28 @@
     </div>
 </div>
 
+<!-- POPUP MODAL TÀI KHOẢN KHÁC -->
+<div class="modal-overlay" id="bankModal" onclick="toggleModal(false)">
+    <div class="modal-card" onclick="event.stopPropagation()">
+        <h4>
+            <span>Tài khoản ngân hàng đối ứng</span>
+            <span style="cursor:pointer;" onclick="toggleModal(false)">&times;</span>
+        </h4>
+        <ul>
+            <li><strong>Vietcombank (VCB):</strong> 0011004245678 - CONG TY VE MAY BAY ABAY</li>
+            <li><strong>Techcombank (TCB):</strong> 19033458921012 - CONG TY VE MAY BAY ABAY</li>
+            <li><strong>MBBank (MB):</strong> 0860123456888 - CONG TY VE MAY BAY ABAY</li>
+            <li><strong>BIDV:</strong> 21510001234567 - CONG TY VE MAY BAY ABAY</li>
+            <li><strong>VietinBank (CTG):</strong> 113000098765 - CONG TY VE MAY BAY ABAY</li>
+            <li><strong>TPBank:</strong> 01234567001 - CONG TY VE MAY BAY ABAY</li>
+        </ul>
+        <button class="btn-close-modal" type="button" onclick="toggleModal(false)">Đóng</button>
+    </div>
+</div>
+
+<div class="toast" id="toast">Đã sao chép!</div>
+
 <script>
-    // DOM các phần tử giao diện
     const inputBank = document.getElementById('input-bank');
     const inputNumber = document.getElementById('input-number');
     const inputName = document.getElementById('input-name');
@@ -416,77 +682,51 @@
     const viewContent = document.getElementById('view-content');
     const qrImage = document.getElementById('qr-image');
 
-    let qrTimeout;
+    let qrTimeout = null;
 
-    // --- CẬP NHẬT GIAO DIỆN & TẠO MÃ QR LẬP TỨC TRÊN TRÌNH DUYỆT ---
-    function renderPaymentGatewayLocal() {
-        viewBank.textContent = inputBank.value.trim().toUpperCase();
-        viewNumber.textContent = inputNumber.value.trim();
-        viewName.textContent = inputName.value.trim().toUpperCase();
-        viewAmount.textContent = inputAmount.value.trim();
-        viewContent.textContent = inputContent.value.trim();
+    // Tự động phân tách hàng nghìn khi nhập số tiền
+    inputAmount.addEventListener('input', function() {
+        let raw = this.value.replace(/\D/g, '');
+        this.value = raw === "" ? "" : Number(raw).toLocaleString('en-US');
+    });
+
+    // Render text hiển thị và tạo mã QR (không chứa addInfo)
+    function renderPaymentGateway() {
+        const bankVal = inputBank.value.trim().toUpperCase();
+        const numberVal = inputNumber.value.trim().replace(/\s+/g, '');
+        const nameVal = inputName.value.trim().toUpperCase();
+        const amountDisplay = inputAmount.value.trim();
+        const contentVal = inputContent.value.trim();
+
+        viewBank.textContent = bankVal;
+        viewNumber.textContent = numberVal;
+        viewName.textContent = nameVal;
+        viewAmount.textContent = amountDisplay;
+        viewContent.textContent = contentVal;
 
         clearTimeout(qrTimeout);
-        qrImage.classList.add('qr-loading'); 
+        qrImage.classList.add('qr-loading');
 
         qrTimeout = setTimeout(() => {
-            const bankCode = inputBank.value.trim().toUpperCase(); 
-            const accountNo = inputNumber.value.trim();
-            const rawAmount = inputAmount.value.replace(/,/g, ''); 
-            const accountName = encodeURIComponent(inputName.value.trim());
+            const cleanAmount = amountDisplay.replace(/,/g, '');
+            const encodedName = encodeURIComponent(nameVal);
 
-            const generateVietQR = `https://img.vietqr.io/image/${bankCode}-${accountNo}-compact2.png?amount=${rawAmount}&accountName=${accountName}`;
-            qrImage.src = generateVietQR;
-        }, 400); 
+            // Chỉ truyền bank, số tài khoản, số tiền và tên người nhận; KHÔNG truyền addInfo
+            const vietQrUrl = `https://img.vietqr.io/image/${bankVal}-${numberVal}-compact2.png?amount=${cleanAmount}&accountName=${encodedName}`;
+            qrImage.src = vietQrUrl;
+        }, 350);
     }
 
-    qrImage.onload = function() {
-        qrImage.classList.remove('qr-loading');
-    };
+    qrImage.onload = () => qrImage.classList.remove('qr-loading');
+    qrImage.onerror = () => qrImage.classList.remove('qr-loading');
 
-    // Lắng nghe sự thay đổi của người dùng tại các ô input
-    const inputs = [inputBank, inputNumber, inputName, inputAmount, inputContent];
-    inputs.forEach(input => {
-        input.addEventListener('input', renderPaymentGatewayLocal);
+    [inputBank, inputNumber, inputName, inputAmount, inputContent].forEach(input => {
+        input.addEventListener('input', renderPaymentGateway);
     });
 
-    // Khởi tạo mã QR cho lần tải đầu tiên
-    renderPaymentGatewayLocal();
+    renderPaymentGateway();
 
-    // --- LOGIC PHỤ (UPLOAD LOGO, COPY, TAB THANH TOÁN) ---
-    const uploadVnpay = document.getElementById('upload-vnpay');
-    const uploadVietqr = document.getElementById('upload-vietqr');
-    const imgVnpay = document.getElementById('img-vnpay');
-    const imgVietqr = document.getElementById('img-vietqr');
-
-    uploadVnpay.addEventListener('change', function() {
-        const file = this.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function(e) { imgVnpay.src = e.target.result; }
-            reader.readAsDataURL(file);
-        }
-    });
-
-    uploadVietqr.addEventListener('change', function() {
-        const file = this.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function(e) { imgVietqr.src = e.target.result; }
-            reader.readAsDataURL(file);
-        }
-    });
-
-    function copyContent(event) {
-        event.preventDefault();
-        const txt = document.getElementById('view-content').textContent;
-        navigator.clipboard.writeText(txt).then(() => {
-            alert('Đã sao chép nội dung chuyển khoản: ' + txt);
-        }).catch(err => {
-            console.error('Không thể sao chép: ', err);
-        });
-    }
-
+    // Chuyển đổi phương thức thanh toán
     const methodItems = document.querySelectorAll('.method-item');
     const transferBox = document.getElementById('transfer-box');
 
@@ -494,14 +734,65 @@
         item.addEventListener('click', function() {
             methodItems.forEach(i => i.classList.remove('active'));
             this.classList.add('active');
-            
-            if(this.querySelector('input').id === 'opt5') {
+
+            const radio = this.querySelector('input[type="radio"]');
+            if (radio) radio.checked = true;
+
+            if (this.getAttribute('data-target') === 'opt5') {
                 transferBox.style.display = 'flex';
             } else {
                 transferBox.style.display = 'none';
             }
         });
     });
+
+    // Tải ảnh logo VNPAY / VietQR
+    function setupLogoUpload(inputId, imgId) {
+        document.getElementById(inputId).addEventListener('change', function() {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = e => document.getElementById(imgId).src = e.target.result;
+                reader.readAsDataURL(file);
+            }
+        });
+    }
+    setupLogoUpload('upload-vnpay', 'img-vnpay');
+    setupLogoUpload('upload-vietqr', 'img-vietqr');
+
+    // Toast thông báo & Sao chép nhanh
+    function showToast(msg) {
+        const toast = document.getElementById('toast');
+        toast.textContent = msg;
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2200);
+    }
+
+    function copyValue(elementId, label) {
+        const text = document.getElementById(elementId).textContent.trim();
+        navigator.clipboard.writeText(text).then(() => {
+            showToast(`Đã sao chép ${label}: ${text}`);
+        });
+    }
+
+    function copyAmount() {
+        const text = document.getElementById('view-amount').textContent.replace(/,/g, '').trim();
+        navigator.clipboard.writeText(text).then(() => {
+            showToast(`Đã sao chép số tiền: ${text} VNĐ`);
+        });
+    }
+
+    // Modal hiển thị danh sách tài khoản khác
+    function toggleModal(show) {
+        const modal = document.getElementById('bankModal');
+        modal.classList.toggle('active', show);
+    }
+
+    // Thu gọn/mở rộng bảng cấu hình admin
+    function togglePanelBody() {
+        const body = document.getElementById('panel-body');
+        body.style.display = body.style.display === 'none' ? 'grid' : 'none';
+    }
 </script>
 
 </body>
