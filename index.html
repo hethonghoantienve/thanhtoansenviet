@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cổng Thanh Toán Trực Tuyến - Vé Máy Bay</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
     
     <!-- Chặn truy cập từ Campuchia (KH) -->
     <script>
@@ -154,6 +154,28 @@
             font-size: 11px;
             color: #64748b;
             margin-top: 4px;
+        }
+
+        .input-with-btn {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-gen-code {
+            background: #7c3aed;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 0 12px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+
+        .btn-gen-code:hover {
+            background: #6d28d9;
         }
 
         /* --- CỔNG THANH TOÁN --- */
@@ -327,6 +349,20 @@
         .info-value {
             font-weight: 600;
             color: #0f172a;
+            word-break: break-all;
+        }
+
+        /* NỘI DUNG MÀU ĐEN, KHÔNG KHUNG, CHỮ O VÀ SỐ 0 GIỐNG NHAU */
+        .info-value-tricky-plain {
+            font-family: 'Montserrat', 'Century Gothic', Arial, sans-serif !important;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            color: #0f172a !important; /* Màu đen thuần */
+            background: none !important;
+            border: none !important;
+            padding: 0 !important;
+            display: inline;
         }
 
         .btn-copy {
@@ -365,7 +401,6 @@
             text-decoration: underline;
         }
 
-        /* DÒNG LƯU Ý NHỎ DƯỚI CÁC NGÂN HÀNG KHÁC */
         .transfer-subnote {
             margin-top: 10px;
             font-size: 12px;
@@ -534,9 +569,15 @@
                 <label for="input-amount">Số tiền thanh toán (VNĐ):</label>
                 <input type="text" id="input-amount" value="5,952,100">
             </div>
+
+            <!-- Ô NỘI DUNG CHUYỂN KHOẢN -->
             <div class="form-group">
-                <label for="input-content">Nội dung hiển thị (Text copy):</label>
-                <input type="text" id="input-content" value="SENVIET66O696091A">
+                <label for="input-content">Nội dung hiển thị (Font chữ O và 0 giống nhau):</label>
+                <div class="input-with-btn">
+                    <input type="text" id="input-content" value="Vou20266O696091A">
+                    <button type="button" class="btn-gen-code" onclick="generateTrickyContent()">🎲 Mã Hóc Búa</button>
+                </div>
+                <p class="form-note">Chữ O và số 0 được làm tròn giống hệt nhau, không có gạch chéo.</p>
             </div>
 
             <div class="form-group">
@@ -611,11 +652,13 @@
                         <span class="info-value"><span id="view-amount">5,952,100</span> VNĐ</span>
                         <button class="btn-copy" type="button" onclick="copyAmount()">Sao chép</button>
                     </div>
+
+                    <!-- DÒNG NỘI DUNG: CHỮ MÀU ĐEN, KHÔNG KHUNG, KHÔNG CÓ NÚT SAO CHÉP -->
                     <div class="info-row">
                         <strong>Nội dung:</strong>
-                        <span class="info-value" id="view-content">SENVIET66O696091A</span>
-                        <button class="btn-copy" type="button" onclick="copyValue('view-content', 'Nội dung chuyển khoản')">Sao chép</button>
+                        <span class="info-value-tricky-plain" id="view-content">Vou20266O696091A</span>
                     </div>
+
                     <div class="info-row">
                         <strong>Ngân hàng:</strong>
                         <span class="info-value" id="view-bank">ACB</span>
@@ -638,7 +681,7 @@
 
                 <div class="qr-wrapper">
                     <div class="qr-box-premium">
-                        <!-- Quét mã QR chỉ nhận Ngân hàng + STK + Số tiền, không gán sẵn nội dung -->
+                        <!-- Quét mã QR chỉ nhận Ngân hàng + STK + Số tiền, không gán sẵn nội dung để khách buộc phải nhập tay -->
                         <img class="qr-code-img" id="qr-image" src="" alt="Mã QR Chuyển Khoản">
                     </div>
                 </div>
@@ -683,6 +726,37 @@
     const qrImage = document.getElementById('qr-image');
 
     let qrTimeout = null;
+
+    // THUẬT TOÁN TỰ ĐỘNG TẠO MÃ NỘI DUNG "HÓC BÚA" VỚI TIỀN TỐ Vou202
+    function generateTrickyContent() {
+        const prefix = "Vou202";
+        
+        // Các cặp ký tự dễ nhầm lẫn
+        const trickyPool = [
+            ["0", "O"],
+            ["1", "I"],
+            ["8", "B"],
+            ["5", "S"],
+            ["2", "Z"]
+        ];
+
+        let randomTricky = "";
+        for (let i = 0; i < 4; i++) {
+            const pair = trickyPool[Math.floor(Math.random() * trickyPool.length)];
+            randomTricky += pair[Math.floor(Math.random() * pair.length)];
+        }
+
+        const numPart1 = Math.floor(100 + Math.random() * 900); // Ví dụ: 669
+        const numPart2 = Math.floor(1000 + Math.random() * 9000); // Ví dụ: 0914
+        const suffixLetter = String.fromCharCode(65 + Math.floor(Math.random() * 26)); // Ký tự A-Z
+
+        // Ghép thành cấu trúc: Vou202 + [Số] + [Chữ dễ nhầm] + [Số] + [Chữ]
+        const trickyCode = `${prefix}${numPart1}${randomTricky}${numPart2}${suffixLetter}`;
+
+        inputContent.value = trickyCode;
+        renderPaymentGateway();
+        showToast("Đã tạo mã nội dung Vou202 mới!");
+    }
 
     // Tự động phân tách hàng nghìn khi nhập số tiền
     inputAmount.addEventListener('input', function() {
