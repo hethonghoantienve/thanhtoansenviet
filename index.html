@@ -5,30 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cổng Thanh Toán Trực Tuyến - Vé Máy Bay</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Chặn truy cập từ Campuchia (KH) -->
-    <script>
-    (async function checkGeoBlock() {
-        try {
-            const res = await fetch('https://ipapi.co/json/');
-            const data = await res.json();
-            if (data && data.country_code ===
-                document.documentElement.innerHTML = `
-                    <head><title>403 Forbidden</title></head>
-                    <body style="display:flex;align-items:center;justify-content:center;height:100vh;margin:0;font-family:sans-serif;background:#f8fafc;color:#dc2626;">
-                        <div style="text-align:center;padding:20px;">
-                            <h1 style="font-size:36px;margin-bottom:8px;">403 Forbidden</h1>
-                            <p style="color:#64748b;font-size:16px;">Truy cập bị từ chối từ vị trí của bạn.</p>
-                        </div>
-                    </body>
-                `;
-                window.stop();
-            }
-        } catch (e) {
-            // Cho phép tiếp tục nếu lỗi kết nối API
-        }
-    })();
-    </script>
 
     <style>
         * {
@@ -365,7 +341,6 @@
             text-decoration: underline;
         }
 
-        /* DÒNG LƯU Ý NHỎ DƯỚI CÁC NGÂN HÀNG KHÁC */
         .transfer-subnote {
             margin-top: 10px;
             font-size: 12px;
